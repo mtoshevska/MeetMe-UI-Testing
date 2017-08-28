@@ -2,6 +2,7 @@ import static org.junit.Assert.*;
 
 import java.io.File;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
@@ -22,10 +23,15 @@ public class Example {
 		driver = new FirefoxDriver(ffBinary, firefoxProfile);
 		baseUrl = "localhost:8000";
 	}
-	
+
 	@Test
 	public void test() {
-		driver.get(baseUrl + "/");
+		fail();
+	}
+
+	@After
+	public void tearDown() {
+		driver.quit();
 	}
 
 }
