@@ -25,6 +25,11 @@ public class TestPageOpenings {
 		baseUrl = "localhost:8000";
 	}
 
+	@After
+	public void tearDown() {
+		driver.quit();
+	}
+
 	@Test
 	public void testOpenLoginPage() throws InterruptedException {
 		driver.get(baseUrl + "/");
@@ -46,7 +51,7 @@ public class TestPageOpenings {
 		System.out.println(url);
 		assertEquals(url, "http://localhost:8000/#/register");
 	}
-	
+
 	@Test
 	public void testSetUpEventNoUserLoggedIn() throws InterruptedException {
 		driver.get(baseUrl + "/");
@@ -57,10 +62,4 @@ public class TestPageOpenings {
 		System.out.println(url);
 		assertEquals(url, "http://localhost:8000/#/register");
 	}
-
-	@After
-	public void tearDown() {
-		driver.quit();
-	}
-
 }
