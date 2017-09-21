@@ -237,17 +237,15 @@ public class TestRegister {
 		driver.findElement(By.xpath("(//input[@type='text'])[3]")).clear();
 		driver.findElement(By.xpath("(//input[@type='text'])[3]")).sendKeys("LastName");
 		driver.findElement(By.xpath("(//input[@type='text'])[4]")).clear();
-		driver.findElement(By.xpath("(//input[@type='text'])[4]")).sendKeys("example1@example.com");
+		driver.findElement(By.xpath("(//input[@type='text'])[4]")).sendKeys("example7@example.com");
 		driver.findElement(By.xpath("//input[@type='password']")).clear();
 		driver.findElement(By.xpath("//input[@type='password']")).sendKeys("password");
 		driver.findElement(By.xpath("(//input[@type='password'])[2]")).clear();
 		driver.findElement(By.xpath("(//input[@type='password'])[2]")).sendKeys("password");
 		driver.findElement(By.xpath("//button[@type='submit']")).click();
-		Thread.sleep(1000);
-		String labelText = driver.findElement(By.className("ngn-message")).getText();
-		Thread.sleep(1000);
-		assertTrue(labelText.contains("User has been registered successfully"));
-		//page url can be used for assertion
+		Thread.sleep(10000);
+		String url = driver.getCurrentUrl();
+		assertEquals(url, "http://localhost:8000/#/login");
 	}
 
 	@Test
@@ -271,5 +269,24 @@ public class TestRegister {
 		String errorLabelText = driver.findElement(By.className("ngn-message")).getText();
 		Thread.sleep(1000);
 		assertTrue(errorLabelText.contains("Name sample@example.com is already taken"));
+	}
+
+	@Test
+	public void testButtons() throws InterruptedException {
+		driver.get(baseUrl + "/");
+		Thread.sleep(1000);
+		driver.findElement(By.linkText("Register")).click();
+		Thread.sleep(1000);
+		String color = driver.findElement(By.xpath("//button[@type='submit']")).getCssValue("color");
+		String backColor = driver.findElement(By.xpath("//button[@type='submit']")).getCssValue("background-color");
+		String textAlignment = driver.findElement(By.xpath("//button[@type='submit']")).getCssValue("text-align");
+		String verticalAlignment = driver.findElement(By.xpath("//button[@type='submit']"))
+				.getCssValue("vertical-align");
+		String text = driver.findElement(By.xpath("//button[@type='submit']")).getText();
+		assertEquals(color, "rgba(255, 255, 255, 1)");
+		assertEquals(backColor, "rgba(91, 192, 222, 1)");
+		assertEquals(textAlignment, "center");
+		assertEquals(verticalAlignment, "middle");
+		assertEquals(text, "Submit");
 	}
 }

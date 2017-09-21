@@ -15,7 +15,7 @@ public class TestLogin {
 
 	public static WebDriver driver;
 	public static String baseUrl;
-	
+
 	@Before
 	public void setUp() throws Exception {
 		File pathToBinary = new File("D:\\firefox-sdk\\bin\\firefox.exe");
@@ -41,7 +41,7 @@ public class TestLogin {
 		assertEquals(placeholder1, "Email");
 		assertEquals(placeholder2, "Password");
 	}
-	
+
 	@Test
 	public void testEqualWidth() throws InterruptedException {
 		driver.get(baseUrl + "/");
@@ -58,7 +58,7 @@ public class TestLogin {
 		assertEquals(width3, width4);
 		assertEquals(width4, width5);
 	}
-	
+
 	@Test
 	public void testEmailEmpty() throws InterruptedException {
 		driver.get(baseUrl + "/");
@@ -73,7 +73,7 @@ public class TestLogin {
 		Thread.sleep(1000);
 		assertEquals(errorLabelText, "The user name or password is incorrect.");
 	}
-	
+
 	@Test
 	public void testPasswordEmpty() throws InterruptedException {
 		driver.get(baseUrl + "/");
@@ -88,7 +88,7 @@ public class TestLogin {
 		Thread.sleep(1000);
 		assertEquals(errorLabelText, "The user name or password is incorrect.");
 	}
-	
+
 	@Test
 	public void testWrongPassword() throws InterruptedException {
 		driver.get(baseUrl + "/");
@@ -105,7 +105,7 @@ public class TestLogin {
 		Thread.sleep(1000);
 		assertEquals(errorLabelText, "The user name or password is incorrect.");
 	}
-	
+
 	@Test
 	public void testWrongEmail() throws InterruptedException {
 		driver.get(baseUrl + "/");
@@ -122,7 +122,7 @@ public class TestLogin {
 		Thread.sleep(1000);
 		assertEquals(errorLabelText, "The user name or password is incorrect.");
 	}
-	
+
 	@Test
 	public void testSuccessfullLogin() throws InterruptedException {
 		driver.get(baseUrl + "/");
@@ -135,8 +135,46 @@ public class TestLogin {
 		driver.findElement(By.xpath("//input[@type='password']")).sendKeys("password");
 		driver.findElement(By.xpath("//button[@type='submit']")).click();
 		Thread.sleep(1000);
-		String labelText = driver.findElement(By.className("ngn-message")).getText();
+		String url = driver.getCurrentUrl();
+		assertEquals(url, "http://localhost:8000/#/calendar");
+	}
+
+	@Test
+	public void testButtons() throws InterruptedException {
+		driver.get(baseUrl + "/");
 		Thread.sleep(1000);
-		assertEquals(labelText, "Success login in.");
+		driver.findElement(By.linkText("Login")).click();
+		Thread.sleep(1000);
+		String color = driver.findElement(By.xpath("//button[@type='submit']")).getCssValue("color");
+		String backColor = driver.findElement(By.xpath("//button[@type='submit']")).getCssValue("background-color");
+		String textAlignment = driver.findElement(By.xpath("//button[@type='submit']")).getCssValue("text-align");
+		String verticalAlignment = driver.findElement(By.xpath("//button[@type='submit']"))
+				.getCssValue("vertical-align");
+		String text = driver.findElement(By.xpath("//button[@type='submit']")).getText();
+		assertEquals(color, "rgba(255, 255, 255, 1)");
+		assertEquals(backColor, "rgba(91, 192, 222, 1)");
+		assertEquals(textAlignment, "center");
+		assertEquals(verticalAlignment, "middle");
+		assertEquals(text, "Login");
+		color = driver.findElement(By.xpath("//button[@type='button']")).getCssValue("color");
+		backColor = driver.findElement(By.xpath("//button[@type='button']")).getCssValue("background-color");
+		textAlignment = driver.findElement(By.xpath("//button[@type='button']")).getCssValue("text-align");
+		verticalAlignment = driver.findElement(By.xpath("//button[@type='button']")).getCssValue("vertical-align");
+		text = driver.findElement(By.xpath("//button[@type='button']")).getText();
+		assertEquals(color, "rgba(51, 51, 51, 1)");
+		assertEquals(backColor, "rgba(240, 240, 240, 1)");
+		assertEquals(textAlignment, "center");
+		assertEquals(verticalAlignment, "middle");
+		assertEquals(text, "| Connect with Facebook");
+		color = driver.findElement(By.xpath("(//button[@type='button'])[2]")).getCssValue("color");
+		backColor = driver.findElement(By.xpath("(//button[@type='button'])[2]")).getCssValue("background-color");
+		textAlignment = driver.findElement(By.xpath("(//button[@type='button'])[2]")).getCssValue("text-align");
+		verticalAlignment = driver.findElement(By.xpath("(//button[@type='button'])[2]")).getCssValue("vertical-align");
+		text = driver.findElement(By.xpath("(//button[@type='button'])[2]")).getText();
+		assertEquals(color, "rgba(51, 51, 51, 1)");
+		assertEquals(backColor, "rgba(240, 240, 240, 1)");
+		assertEquals(textAlignment, "center");
+		assertEquals(verticalAlignment, "middle");
+		assertEquals(text, "| Connect with Google+");
 	}
 }
