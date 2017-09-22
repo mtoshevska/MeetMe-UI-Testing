@@ -3,6 +3,7 @@ import static org.junit.Assert.*;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.time.LocalDate;
 
 import org.junit.After;
 import org.junit.Before;
@@ -46,7 +47,7 @@ public class TestCalendar {
 		driver.quit();
 	}
 
-	//@Test
+	@Test
 	public void testSearchBox() throws InterruptedException {
 		String placeholder = driver.findElement(By.id("ex1_value")).getAttribute("placeholder");
 		String color = driver.findElement(By.id("ex1_value")).getCssValue("color");
@@ -61,7 +62,7 @@ public class TestCalendar {
 		}
 	}
 
-	//@Test
+	@Test
 	public void testButtons() {
 		WebElement addEventButton = driver.findElement(By.cssSelector("button.btn.btn__add-event"));
 		String color = addEventButton.getCssValue("color");
@@ -72,7 +73,7 @@ public class TestCalendar {
 		String text = addEventButton.getText();
 		assertEquals("rgba(255, 255, 255, 1)", color);
 		assertEquals("rgba(104, 184, 223, 1)", backColor);
-		assertEquals("center" ,textAlignment);
+		assertEquals("center", textAlignment);
 		assertEquals("middle", verticalAlignment);
 		assertEquals("0px", marginTop);
 		assertEquals(text, "Add event");
@@ -85,49 +86,156 @@ public class TestCalendar {
 		text = addMeetingButton.getText();
 		assertEquals("rgba(255, 255, 255, 1)", color);
 		assertEquals("rgba(170, 205, 75, 1)", backColor);
-		assertEquals("center" ,textAlignment);
+		assertEquals("center", textAlignment);
 		assertEquals("middle", verticalAlignment);
 		assertEquals("23px", marginTop);
 		assertEquals(text, "Add meeting");
 	}
 
 	@Test
-	public void testNavigationToEvent() throws InterruptedException{
+	public void testNavigationToEvent() throws InterruptedException {
 		driver.findElement(By.cssSelector("button.btn.btn__add-event")).click();
 		Thread.sleep(1000);
 		String url = driver.getCurrentUrl();
 		assertEquals("http://localhost:8000/#/event", url);
 	}
-	
+
 	@Test
-	public void testNavigationToMeeting() throws InterruptedException{
+	public void testNavigationToMeeting() throws InterruptedException {
 		driver.findElement(By.cssSelector("button.btn.btn__add-meeting")).click();
 		Thread.sleep(1000);
 		String url = driver.getCurrentUrl();
 		assertEquals("http://localhost:8000/#/meeting", url);
 	}
-	
+
 	@Test
-	public void testNavigationToRequests() throws InterruptedException{
+	public void testNavigationToRequests() throws InterruptedException {
 		driver.findElement(By.xpath("//ng-transclude/i")).click();
 		Thread.sleep(1000);
 		String url = driver.getCurrentUrl();
 		assertEquals("http://localhost:8000/#/meetingRequests", url);
 	}
-	
+
 	@Test
-	public void testNavigationToNotifications() throws InterruptedException{
+	public void testNavigationToNotifications() throws InterruptedException {
 		driver.findElement(By.xpath("//li[3]/a/notification-icon/div/div[2]/ng-transclude/i")).click();
 		Thread.sleep(1000);
 		String url = driver.getCurrentUrl();
 		assertEquals("http://localhost:8000/#/connectionNotifications", url);
 	}
-	
+
 	@Test
-	public void testNavigationToProfile() throws InterruptedException{
+	public void testNavigationToProfile() throws InterruptedException {
 		driver.findElement(By.xpath("//a/i")).click();
 		Thread.sleep(1000);
 		String url = driver.getCurrentUrl();
 		assertEquals("http://localhost:8000/#/profile/", url);
+	}
+
+	@Test
+	public void testHighlightedDay() throws InterruptedException {
+		Thread.sleep(1000);
+		List<WebElement> elements = driver.findElements(By.className("fc-state-highlight"));
+		String date = LocalDate.now().toString();
+		for (WebElement element : elements) {
+			String text = element.getAttribute("data-date");
+			assertEquals(date, text);
+		}
+		Thread.sleep(1000);
+		driver.findElement(By.className("fc-agendaWeek-button")).click();
+		Thread.sleep(1000);
+		elements = driver.findElements(By.className("fc-state-highlight"));
+		for (WebElement element : elements) {
+			String text = element.getAttribute("data-date");
+			assertEquals(date, text);
+		}
+		Thread.sleep(1000);
+		driver.findElement(By.className("fc-agendaDay-button")).click();
+		Thread.sleep(1000);
+		elements = driver.findElements(By.className("fc-state-highlight"));
+		for (WebElement element : elements) {
+			String text = element.getAttribute("data-date");
+			assertEquals(date, text);
+		}
+	}
+
+	@Test
+	public void testMonthNavigations() throws InterruptedException {
+		Thread.sleep(1000);
+		LocalDate date = LocalDate.now();
+		String realText = date.getMonth() + " " + date.getYear();
+		String text = driver.findElement(By.cssSelector(".fc-center > h2")).getText();
+		assertEquals(realText.toLowerCase(), text.toLowerCase());
+		Thread.sleep(1000);
+		LocalDate nextDate = date.plusMonths(1);
+		driver.findElement(By.className("fc-next-button")).click();
+		realText = nextDate.getMonth() + " " + nextDate.getYear();
+		text = driver.findElement(By.cssSelector(".fc-center > h2")).getText();
+		assertEquals(realText.toLowerCase(), text.toLowerCase());
+		Thread.sleep(1000);
+		LocalDate prevDate = nextDate.minusMonths(1);
+		driver.findElement(By.className("fc-prev-button")).click();
+		realText = prevDate.getMonth() + " " + prevDate.getYear();
+		text = driver.findElement(By.cssSelector(".fc-center > h2")).getText();
+		assertEquals(realText.toLowerCase(), text.toLowerCase());
+	}
+
+	@Test
+	public void testDayNavigations() throws InterruptedException {
+		Thread.sleep(1000);
+		LocalDate date = LocalDate.now();
+		driver.findElement(By.className("fc-agendaDay-button")).click();
+		String realText = date.getMonth() + " " + date.getDayOfMonth() + ", " + date.getYear();
+		String text = driver.findElement(By.cssSelector(".fc-center > h2")).getText();
+		assertEquals(realText.toLowerCase(), text.toLowerCase());
+		Thread.sleep(1000);
+		LocalDate prevDate = date.minusDays(1);
+		driver.findElement(By.className("fc-prev-button")).click();
+		realText = prevDate.getMonth() + " " + prevDate.getDayOfMonth() + ", " + prevDate.getYear();
+		text = driver.findElement(By.cssSelector(".fc-center > h2")).getText();
+		assertEquals(realText.toLowerCase(), text.toLowerCase());
+		Thread.sleep(1000);
+		LocalDate nextDate = prevDate.plusDays(1);
+		driver.findElement(By.className("fc-next-button")).click();
+		realText = nextDate.getMonth() + " " + nextDate.getDayOfMonth() + ", " + nextDate.getYear();
+		text = driver.findElement(By.cssSelector(".fc-center > h2")).getText();
+		assertEquals(realText.toLowerCase(), text.toLowerCase());
+	}
+
+	@Test
+	public void testTodayButton() throws InterruptedException {
+		Thread.sleep(1000);
+		driver.findElement(By.className("fc-next-button")).click();
+		driver.findElement(By.className("fc-next-button")).click();
+		driver.findElement(By.className("fc-today-button")).click();
+		String text = driver.findElement(By.cssSelector(".fc-center > h2")).getText();
+		LocalDate date = LocalDate.now();
+		String realText = date.getMonth() + " " + date.getYear();
+		assertEquals(realText.toLowerCase(), text.toLowerCase());
+		Thread.sleep(1000);
+		driver.findElement(By.className("fc-agendaDay-button")).click();
+		driver.findElement(By.className("fc-prev-button")).click();
+		driver.findElement(By.className("fc-today-button")).click();
+		realText = date.getMonth() + " " + date.getDayOfMonth() + ", " + date.getYear();
+		text = driver.findElement(By.cssSelector(".fc-center > h2")).getText();
+		assertEquals(realText.toLowerCase(), text.toLowerCase());
+	}
+
+	@Test
+	public void testTodayButtonDisablement() throws InterruptedException {
+		Thread.sleep(1000);
+		String disabled = driver.findElement(By.className("fc-today-button")).getAttribute("disabled");
+		assertEquals("true", disabled);
+		driver.findElement(By.className("fc-next-button")).click();
+		disabled = driver.findElement(By.className("fc-today-button")).getAttribute("disabled");
+		assertNull(disabled);
+		driver.findElement(By.className("fc-next-button")).click();
+		driver.findElement(By.className("fc-today-button")).click();
+		disabled = driver.findElement(By.className("fc-today-button")).getAttribute("disabled");
+		assertEquals("true", disabled);
+		driver.findElement(By.className("fc-agendaWeek-button")).click();
+		driver.findElement(By.className("fc-prev-button")).click();
+		disabled = driver.findElement(By.className("fc-today-button")).getAttribute("disabled");
+		assertNull(disabled);
 	}
 }
