@@ -1,12 +1,14 @@
 import static org.junit.Assert.*;
 
 import java.io.File;
+import java.util.List;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxBinary;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxProfile;
@@ -176,5 +178,28 @@ public class TestLogin {
 		assertEquals(textAlignment, "center");
 		assertEquals(verticalAlignment, "middle");
 		assertEquals(text, "| Connect with Google+");
+	}
+
+	@Test
+	public void testHeadingText() throws InterruptedException {
+		driver.get(baseUrl + "/");
+		Thread.sleep(1000);
+		driver.findElement(By.linkText("Login")).click();
+		Thread.sleep(1000);
+		List<WebElement> headings = driver.findElements(By.className("heading__style"));
+		WebElement heading = headings.get(0);
+		String headingText = heading.getText();
+		String fontSize = heading.getCssValue("font-size");
+		String color = heading.getCssValue("color");
+		assertEquals("Login", headingText);
+		assertEquals("30px", fontSize);
+		assertEquals("rgba(149, 165, 166, 1)", color);
+		heading = headings.get(1);
+		headingText = heading.getText();
+		fontSize = heading.getCssValue("font-size");
+		color = heading.getCssValue("color");
+		assertEquals("Social Logins", headingText);
+		assertEquals("30px", fontSize);
+		assertEquals("rgba(149, 165, 166, 1)", color);
 	}
 }

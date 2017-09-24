@@ -7,6 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxBinary;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxProfile;
@@ -288,5 +289,20 @@ public class TestRegister {
 		assertEquals(textAlignment, "center");
 		assertEquals(verticalAlignment, "middle");
 		assertEquals(text, "Submit");
+	}
+
+	@Test
+	public void testHeadingText() throws InterruptedException {
+		driver.get(baseUrl + "/");
+		Thread.sleep(1000);
+		driver.findElement(By.linkText("Register")).click();
+		Thread.sleep(1000);
+		WebElement heading = driver.findElement(By.className("heading__style"));
+		String headingText = heading.getText();
+		String fontSize = heading.getCssValue("font-size");
+		String color = heading.getCssValue("color");
+		assertEquals("Register", headingText);
+		assertEquals("30px", fontSize);
+		assertEquals("rgba(149, 165, 166, 1)", color);
 	}
 }

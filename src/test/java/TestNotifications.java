@@ -96,6 +96,12 @@ public class TestNotifications {
 
 	@Test
 	public void testHeadingText() {
-
+		WebElement heading = driver.findElement(By.className("heading__style"));
+		String headingText = heading.getText();
+		String fontSize = heading.getCssValue("font-size");
+		String color = heading.getCssValue("color");
+		assertEquals("Notifications", headingText);
+		assertEquals("30px", fontSize);
+		assertEquals("rgba(149, 165, 166, 1)", color);
 	}
 }

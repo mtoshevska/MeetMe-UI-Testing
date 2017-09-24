@@ -94,4 +94,15 @@ public class TestAddEvent {
 		Thread.sleep(50000);
 		driver.findElement(By.xpath("//div[34]/div/table/tbody/tr/td/span[10]")).click();
 	}
+
+	@Test
+	public void testHeadingText() {
+		WebElement heading = driver.findElement(By.className("heading__style"));
+		String headingText = heading.getText();
+		String fontSize = heading.getCssValue("font-size");
+		String color = heading.getCssValue("color");
+		assertEquals("Schedule event", headingText);
+		assertEquals("30px", fontSize);
+		assertEquals("rgba(149, 165, 166, 1)", color);
+	}
 }

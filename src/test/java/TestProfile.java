@@ -110,4 +110,15 @@ public class TestProfile {
 		assertTrue(name.getText().contains("Toshevska"));
 		assertTrue(email.getText().contains("martina.tosevska.95@gmail.com"));
 	}
+
+	@Test
+	public void testHeadingText() {
+		WebElement heading = driver.findElement(By.className("heading__style"));
+		String headingText = heading.getText();
+		String fontSize = heading.getCssValue("font-size");
+		String color = heading.getCssValue("color");
+		assertEquals("My Profile", headingText);
+		assertEquals("30px", fontSize);
+		assertEquals("rgba(149, 165, 166, 1)", color);
+	}
 }

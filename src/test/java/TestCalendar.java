@@ -236,4 +236,15 @@ public class TestCalendar {
 		disabled = driver.findElement(By.className("fc-today-button")).getAttribute("disabled");
 		assertNull(disabled);
 	}
+
+	@Test
+	public void testHeadingText() {
+		WebElement heading = driver.findElement(By.className("heading__style"));
+		String headingText = heading.getText();
+		String fontSize = heading.getCssValue("font-size");
+		String color = heading.getCssValue("color");
+		assertEquals("My Calendar", headingText);
+		assertEquals("30px", fontSize);
+		assertEquals("rgba(149, 165, 166, 1)", color);
+	}
 }
