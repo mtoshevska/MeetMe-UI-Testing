@@ -14,7 +14,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxProfile;
 
 public class TestKeyboardActions {
-	
+
 	public static WebDriver driver;
 	public static String baseUrl;
 
@@ -55,7 +55,7 @@ public class TestKeyboardActions {
 		String identifier = active.getAttribute("placeholder");
 		assertEquals("Password", identifier);
 	}
-	
+
 	@Test
 	public void testAddEventTab() throws InterruptedException {
 		driver.findElement(By.linkText("Login")).click();
@@ -74,7 +74,7 @@ public class TestKeyboardActions {
 		String identifier = active.getAttribute("id");
 		assertEquals("eventLocation", identifier);
 	}
-	
+
 	@Test
 	public void testAddMeetingTab() throws InterruptedException {
 		driver.findElement(By.linkText("Login")).click();
@@ -93,7 +93,7 @@ public class TestKeyboardActions {
 		String identifier = active.getAttribute("id");
 		assertEquals("meetingLocation", identifier);
 	}
-	
+
 	@Test
 	public void testRegisterEnter() throws InterruptedException {
 		driver.findElement(By.linkText("Register")).click();
@@ -104,7 +104,7 @@ public class TestKeyboardActions {
 		WebElement errorLabel = driver.findElement(By.className("ngn-message"));
 		assertTrue(errorLabel.isDisplayed());
 	}
-	
+
 	@Test
 	public void testLoginEnter() throws InterruptedException {
 		driver.findElement(By.linkText("Login")).click();
@@ -115,7 +115,7 @@ public class TestKeyboardActions {
 		WebElement errorLabel = driver.findElement(By.className("ngn-message"));
 		assertTrue(errorLabel.isDisplayed());
 	}
-	
+
 	@Test
 	public void testAddEventEnter() throws InterruptedException {
 		driver.findElement(By.linkText("Login")).click();
@@ -136,7 +136,7 @@ public class TestKeyboardActions {
 		WebElement errorLabel = driver.findElement(By.className("ngn-message"));
 		assertTrue(errorLabel.isDisplayed());
 	}
-	
+
 	@Test
 	public void testAddMeetingEnter() throws InterruptedException {
 		driver.findElement(By.linkText("Login")).click();
