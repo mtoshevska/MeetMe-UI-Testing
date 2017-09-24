@@ -57,6 +57,44 @@ public class TestKeyboardActions {
 	}
 	
 	@Test
+	public void testAddEventTab() throws InterruptedException {
+		driver.findElement(By.linkText("Login")).click();
+		Thread.sleep(1000);
+		driver.findElement(By.xpath("(//input[@type='text'])[2]")).clear();
+		driver.findElement(By.xpath("(//input[@type='text'])[2]")).sendKeys("sample@example.com");
+		driver.findElement(By.xpath("//input[@type='password']")).clear();
+		driver.findElement(By.xpath("//input[@type='password']")).sendKeys("password");
+		driver.findElement(By.xpath("//button[@type='submit']")).click();
+		Thread.sleep(1000);
+		driver.findElement(By.cssSelector("button.btn.btn__add-event")).click();
+		Thread.sleep(1000);
+		driver.findElement(By.id("eventName")).clear();
+		driver.findElement(By.id("eventName")).sendKeys(Keys.TAB);
+		WebElement active = driver.switchTo().activeElement();
+		String identifier = active.getAttribute("id");
+		assertEquals("eventLocation", identifier);
+	}
+	
+	@Test
+	public void testAddMeetingTab() throws InterruptedException {
+		driver.findElement(By.linkText("Login")).click();
+		Thread.sleep(1000);
+		driver.findElement(By.xpath("(//input[@type='text'])[2]")).clear();
+		driver.findElement(By.xpath("(//input[@type='text'])[2]")).sendKeys("sample@example.com");
+		driver.findElement(By.xpath("//input[@type='password']")).clear();
+		driver.findElement(By.xpath("//input[@type='password']")).sendKeys("password");
+		driver.findElement(By.xpath("//button[@type='submit']")).click();
+		Thread.sleep(1000);
+		driver.findElement(By.cssSelector("button.btn.btn__add-meeting")).click();
+		Thread.sleep(1000);
+		driver.findElement(By.id("meetingName")).clear();
+		driver.findElement(By.id("meetingName")).sendKeys(Keys.TAB);
+		WebElement active = driver.switchTo().activeElement();
+		String identifier = active.getAttribute("id");
+		assertEquals("meetingLocation", identifier);
+	}
+	
+	@Test
 	public void testRegisterEnter() throws InterruptedException {
 		driver.findElement(By.linkText("Register")).click();
 		Thread.sleep(1000);
@@ -73,6 +111,48 @@ public class TestKeyboardActions {
 		Thread.sleep(1000);
 		driver.findElement(By.xpath("(//input[@type='text'])[2]")).clear();
 		driver.findElement(By.xpath("(//input[@type='text'])[2]")).sendKeys(Keys.ENTER);
+		Thread.sleep(1000);
+		WebElement errorLabel = driver.findElement(By.className("ngn-message"));
+		assertTrue(errorLabel.isDisplayed());
+	}
+	
+	@Test
+	public void testAddEventEnter() throws InterruptedException {
+		driver.findElement(By.linkText("Login")).click();
+		Thread.sleep(1000);
+		driver.findElement(By.xpath("(//input[@type='text'])[2]")).clear();
+		driver.findElement(By.xpath("(//input[@type='text'])[2]")).sendKeys("sample@example.com");
+		driver.findElement(By.xpath("//input[@type='password']")).clear();
+		driver.findElement(By.xpath("//input[@type='password']")).sendKeys("password");
+		driver.findElement(By.xpath("//button[@type='submit']")).click();
+		Thread.sleep(1000);
+		driver.findElement(By.className("ngn-dismiss")).click();
+		Thread.sleep(1000);
+		driver.findElement(By.cssSelector("button.btn.btn__add-event")).click();
+		Thread.sleep(1000);
+		driver.findElement(By.id("eventName")).clear();
+		driver.findElement(By.id("eventName")).sendKeys(Keys.ENTER);
+		Thread.sleep(1000);
+		WebElement errorLabel = driver.findElement(By.className("ngn-message"));
+		assertTrue(errorLabel.isDisplayed());
+	}
+	
+	@Test
+	public void testAddMeetingEnter() throws InterruptedException {
+		driver.findElement(By.linkText("Login")).click();
+		Thread.sleep(1000);
+		driver.findElement(By.xpath("(//input[@type='text'])[2]")).clear();
+		driver.findElement(By.xpath("(//input[@type='text'])[2]")).sendKeys("sample@example.com");
+		driver.findElement(By.xpath("//input[@type='password']")).clear();
+		driver.findElement(By.xpath("//input[@type='password']")).sendKeys("password");
+		driver.findElement(By.xpath("//button[@type='submit']")).click();
+		Thread.sleep(1000);
+		driver.findElement(By.className("ngn-dismiss")).click();
+		Thread.sleep(1000);
+		driver.findElement(By.cssSelector("button.btn.btn__add-meeting")).click();
+		Thread.sleep(1000);
+		driver.findElement(By.id("meetingName")).clear();
+		driver.findElement(By.id("meetingName")).sendKeys(Keys.ENTER);
 		Thread.sleep(1000);
 		WebElement errorLabel = driver.findElement(By.className("ngn-message"));
 		assertTrue(errorLabel.isDisplayed());
