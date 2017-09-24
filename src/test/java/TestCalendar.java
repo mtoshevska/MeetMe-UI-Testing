@@ -45,7 +45,7 @@ public class TestCalendar {
 		driver.quit();
 	}
 
-	@Test
+	//@Test
 	public void testSearchBox() throws InterruptedException {
 		String placeholder = driver.findElement(By.id("ex1_value")).getAttribute("placeholder");
 		String color = driver.findElement(By.id("ex1_value")).getCssValue("color");
@@ -60,7 +60,7 @@ public class TestCalendar {
 		}
 	}
 
-	@Test
+	//@Test
 	public void testButtons() {
 		WebElement addEventButton = driver.findElement(By.cssSelector("button.btn.btn__add-event"));
 		String color = addEventButton.getCssValue("color");
@@ -90,7 +90,7 @@ public class TestCalendar {
 		assertEquals(text, "Add meeting");
 	}
 
-	@Test
+	//@Test
 	public void testNavigationToEvent() throws InterruptedException {
 		driver.findElement(By.cssSelector("button.btn.btn__add-event")).click();
 		Thread.sleep(1000);
@@ -98,7 +98,7 @@ public class TestCalendar {
 		assertEquals("http://localhost:8000/#/event", url);
 	}
 
-	@Test
+	//@Test
 	public void testNavigationToMeeting() throws InterruptedException {
 		driver.findElement(By.cssSelector("button.btn.btn__add-meeting")).click();
 		Thread.sleep(1000);
@@ -106,7 +106,7 @@ public class TestCalendar {
 		assertEquals("http://localhost:8000/#/meeting", url);
 	}
 
-	@Test
+	//@Test
 	public void testNavigationToRequests() throws InterruptedException {
 		driver.findElement(By.xpath("//ng-transclude/i")).click();
 		Thread.sleep(1000);
@@ -114,7 +114,7 @@ public class TestCalendar {
 		assertEquals("http://localhost:8000/#/meetingRequests", url);
 	}
 
-	@Test
+	//@Test
 	public void testNavigationToNotifications() throws InterruptedException {
 		driver.findElement(By.xpath("//li[3]/a/notification-icon/div/div[2]/ng-transclude/i")).click();
 		Thread.sleep(1000);
@@ -122,7 +122,7 @@ public class TestCalendar {
 		assertEquals("http://localhost:8000/#/connectionNotifications", url);
 	}
 
-	@Test
+	//@Test
 	public void testNavigationToProfile() throws InterruptedException {
 		driver.findElement(By.xpath("//a/i")).click();
 		Thread.sleep(1000);
@@ -130,7 +130,7 @@ public class TestCalendar {
 		assertEquals("http://localhost:8000/#/profile/", url);
 	}
 
-	@Test
+	//@Test
 	public void testHighlightedDay() throws InterruptedException {
 		Thread.sleep(1000);
 		List<WebElement> elements = driver.findElements(By.className("fc-state-highlight"));
@@ -157,7 +157,7 @@ public class TestCalendar {
 		}
 	}
 
-	@Test
+	//@Test
 	public void testMonthNavigations() throws InterruptedException {
 		Thread.sleep(1000);
 		LocalDate date = LocalDate.now();
@@ -178,7 +178,7 @@ public class TestCalendar {
 		assertEquals(realText.toLowerCase(), text.toLowerCase());
 	}
 
-	@Test
+	//@Test
 	public void testDayNavigations() throws InterruptedException {
 		Thread.sleep(1000);
 		LocalDate date = LocalDate.now();
@@ -200,7 +200,7 @@ public class TestCalendar {
 		assertEquals(realText.toLowerCase(), text.toLowerCase());
 	}
 
-	@Test
+	//@Test
 	public void testTodayButton() throws InterruptedException {
 		Thread.sleep(1000);
 		driver.findElement(By.className("fc-next-button")).click();
@@ -219,7 +219,7 @@ public class TestCalendar {
 		assertEquals(realText.toLowerCase(), text.toLowerCase());
 	}
 
-	@Test
+	//@Test
 	public void testTodayButtonDisablement() throws InterruptedException {
 		Thread.sleep(1000);
 		String disabled = driver.findElement(By.className("fc-today-button")).getAttribute("disabled");
@@ -236,8 +236,40 @@ public class TestCalendar {
 		disabled = driver.findElement(By.className("fc-today-button")).getAttribute("disabled");
 		assertNull(disabled);
 	}
-
+	
 	@Test
+	public void testEventAndMeetingColors() throws InterruptedException {
+		Thread.sleep(10000);
+		List<WebElement> elements = driver.findElements(By.className("event-low"));
+		for(WebElement element:elements) {
+			String color = element.getCssValue("color");
+			String backColor = element.getCssValue("background-color");
+			String borderColor = element.getCssValue("border-top-color");
+			assertEquals("rgba(0, 0, 0, 1)", color);
+			assertEquals("rgba(255, 238, 88, 1)", backColor);
+			assertEquals("rgba(169, 169, 169, 1)", borderColor);
+		}
+		elements = driver.findElements(By.className("event-medium"));
+		for(WebElement element:elements) {
+			String color = element.getCssValue("color");
+			String backColor = element.getCssValue("background-color");
+			String borderColor = element.getCssValue("border-top-color");
+			assertEquals("rgba(0, 0, 0, 1)", color);
+			assertEquals("rgba(255, 183, 77, 1)", backColor);
+			assertEquals("rgba(169, 169, 169, 1)", borderColor);
+		}
+		elements = driver.findElements(By.className("event-high"));
+		for(WebElement element:elements) {
+			String color = element.getCssValue("color");
+			String backColor = element.getCssValue("background-color");
+			String borderColor = element.getCssValue("border-top-color");
+			assertEquals("rgba(0, 0, 0, 1)", color);
+			assertEquals("rgba(229, 115, 115, 1)", backColor);
+			assertEquals("rgba(169, 169, 169, 1)", borderColor);
+		}
+	}
+
+	//@Test
 	public void testHeadingText() {
 		WebElement heading = driver.findElement(By.className("heading__style"));
 		String headingText = heading.getText();
