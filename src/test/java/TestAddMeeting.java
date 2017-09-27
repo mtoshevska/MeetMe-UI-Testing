@@ -1,6 +1,7 @@
 import static org.junit.Assert.*;
 
 import java.io.File;
+import java.time.LocalDate;
 
 import org.junit.After;
 import org.junit.Before;
@@ -45,7 +46,7 @@ public class TestAddMeeting {
 		driver.quit();
 	}
 
-	@Test
+	// @Test
 	public void testPlaceholders() {
 		String placeholder1 = driver.findElement(By.id("meetingName")).getAttribute("placeholder");
 		String placeholder2 = driver.findElement(By.id("meetingLocation")).getAttribute("placeholder");
@@ -59,7 +60,7 @@ public class TestAddMeeting {
 		assertEquals("Add end date and time...", placeholder5);
 	}
 
-	@Test
+	// @Test
 	public void testButton() throws InterruptedException {
 		WebElement button = driver.findElement(By.xpath("//button[@type='button']"));
 		Thread.sleep(1000);
@@ -90,20 +91,31 @@ public class TestAddMeeting {
 		driver.findElement(By.xpath("//div[37]/div/table/tbody/tr/td/span[7]")).click();
 	}
 
-	@Test
+	//@Test
 	public void testEndDatePicker() throws InterruptedException {
+		Thread.sleep(10000);
 		driver.findElement(By.xpath("//div[6]/date-time-picker/div[2]/span")).click();
-		Thread.sleep(50000);
-		driver.findElement(By.xpath("//div[@id='sizzle1506087855827']/div[3]/table/tbody/tr[5]/td[5]")).click();
-		Thread.sleep(50000);
-		driver.findElement(By.cssSelector(
-				"#sizzle1506087855827 > div.datetimepicker-hours > table..table-condensed > tbody > tr > td > span.hour.active"))
-				.click();
-		Thread.sleep(50000);
-		driver.findElement(By.xpath("//div[38]/div/table/tbody/tr/td/span[7]")).click();
+		WebElement pickerDays = driver.findElement(By.xpath(
+				"//body/div[@class='datetimepicker datetimepicker-dropdown-bottom-right dropdown-menu'][last()]/div[@class='datetimepicker-days']//td[@class='day active']"));
+		Thread.sleep(1000);
+		pickerDays.click();
+		Thread.sleep(1000);
+		WebElement pickerHours = driver.findElement(By.xpath(
+				"//body/div[@class='datetimepicker datetimepicker-dropdown-bottom-right dropdown-menu'][last()]/div[@class='datetimepicker-hours']//span[24]"));
+		Thread.sleep(1000);
+		pickerHours.click();
+		Thread.sleep(1000);
+		WebElement pickerMinutes = driver.findElement(By.xpath(
+				"//body/div[@class='datetimepicker datetimepicker-dropdown-bottom-right dropdown-menu'][last()]/div[@class='datetimepicker-minutes']//span[12]"));
+		Thread.sleep(1000);
+		pickerMinutes.click();
+		Thread.sleep(5000);
+		LocalDate date = LocalDate.now();
+		String text = driver.findElement(By.xpath("//date-time-picker[@label='Meeting End']//input")).getAttribute("value");
+		assertEquals(date.toString() + " 23:55", text);
 	}
 
-	@Test
+	// @Test
 	public void testHeadingText() {
 		WebElement heading = driver.findElement(By.className("heading__style"));
 		String headingText = heading.getText();
