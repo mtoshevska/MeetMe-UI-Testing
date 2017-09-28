@@ -45,7 +45,7 @@ public class TestCalendar {
 		driver.quit();
 	}
 
-	//@Test
+	@Test
 	public void testSearchBox() throws InterruptedException {
 		String placeholder = driver.findElement(By.id("ex1_value")).getAttribute("placeholder");
 		String color = driver.findElement(By.id("ex1_value")).getCssValue("color");
@@ -60,7 +60,7 @@ public class TestCalendar {
 		}
 	}
 
-	//@Test
+	@Test
 	public void testButtons() {
 		WebElement addEventButton = driver.findElement(By.cssSelector("button.btn.btn__add-event"));
 		String color = addEventButton.getCssValue("color");
@@ -90,7 +90,7 @@ public class TestCalendar {
 		assertEquals(text, "Add meeting");
 	}
 
-	//@Test
+	@Test
 	public void testNavigationToEvent() throws InterruptedException {
 		driver.findElement(By.cssSelector("button.btn.btn__add-event")).click();
 		Thread.sleep(1000);
@@ -98,7 +98,7 @@ public class TestCalendar {
 		assertEquals("http://localhost:8000/#/event", url);
 	}
 
-	//@Test
+	@Test
 	public void testNavigationToMeeting() throws InterruptedException {
 		driver.findElement(By.cssSelector("button.btn.btn__add-meeting")).click();
 		Thread.sleep(1000);
@@ -106,7 +106,7 @@ public class TestCalendar {
 		assertEquals("http://localhost:8000/#/meeting", url);
 	}
 
-	//@Test
+	@Test
 	public void testNavigationToRequests() throws InterruptedException {
 		driver.findElement(By.xpath("//ng-transclude/i")).click();
 		Thread.sleep(1000);
@@ -114,7 +114,7 @@ public class TestCalendar {
 		assertEquals("http://localhost:8000/#/meetingRequests", url);
 	}
 
-	//@Test
+	@Test
 	public void testNavigationToNotifications() throws InterruptedException {
 		driver.findElement(By.xpath("//li[3]/a/notification-icon/div/div[2]/ng-transclude/i")).click();
 		Thread.sleep(1000);
@@ -122,7 +122,7 @@ public class TestCalendar {
 		assertEquals("http://localhost:8000/#/connectionNotifications", url);
 	}
 
-	//@Test
+	@Test
 	public void testNavigationToProfile() throws InterruptedException {
 		driver.findElement(By.xpath("//a/i")).click();
 		Thread.sleep(1000);
@@ -130,7 +130,7 @@ public class TestCalendar {
 		assertEquals("http://localhost:8000/#/profile/", url);
 	}
 
-	//@Test
+	@Test
 	public void testHighlightedDay() throws InterruptedException {
 		Thread.sleep(1000);
 		List<WebElement> elements = driver.findElements(By.className("fc-state-highlight"));
@@ -157,7 +157,7 @@ public class TestCalendar {
 		}
 	}
 
-	//@Test
+	@Test
 	public void testMonthNavigations() throws InterruptedException {
 		Thread.sleep(1000);
 		LocalDate date = LocalDate.now();
@@ -178,7 +178,7 @@ public class TestCalendar {
 		assertEquals(realText.toLowerCase(), text.toLowerCase());
 	}
 
-	//@Test
+	@Test
 	public void testDayNavigations() throws InterruptedException {
 		Thread.sleep(1000);
 		LocalDate date = LocalDate.now();
@@ -200,7 +200,7 @@ public class TestCalendar {
 		assertEquals(realText.toLowerCase(), text.toLowerCase());
 	}
 
-	//@Test
+	@Test
 	public void testTodayButton() throws InterruptedException {
 		Thread.sleep(1000);
 		driver.findElement(By.className("fc-next-button")).click();
@@ -219,7 +219,7 @@ public class TestCalendar {
 		assertEquals(realText.toLowerCase(), text.toLowerCase());
 	}
 
-	//@Test
+	@Test
 	public void testTodayButtonDisablement() throws InterruptedException {
 		Thread.sleep(1000);
 		String disabled = driver.findElement(By.className("fc-today-button")).getAttribute("disabled");
@@ -236,12 +236,12 @@ public class TestCalendar {
 		disabled = driver.findElement(By.className("fc-today-button")).getAttribute("disabled");
 		assertNull(disabled);
 	}
-	
+
 	@Test
 	public void testEventAndMeetingColors() throws InterruptedException {
 		Thread.sleep(10000);
 		List<WebElement> elements = driver.findElements(By.className("event-low"));
-		for(WebElement element:elements) {
+		for (WebElement element : elements) {
 			String color = element.getCssValue("color");
 			String backColor = element.getCssValue("background-color");
 			String borderColor = element.getCssValue("border-top-color");
@@ -250,7 +250,7 @@ public class TestCalendar {
 			assertEquals("rgba(169, 169, 169, 1)", borderColor);
 		}
 		elements = driver.findElements(By.className("event-medium"));
-		for(WebElement element:elements) {
+		for (WebElement element : elements) {
 			String color = element.getCssValue("color");
 			String backColor = element.getCssValue("background-color");
 			String borderColor = element.getCssValue("border-top-color");
@@ -259,7 +259,7 @@ public class TestCalendar {
 			assertEquals("rgba(169, 169, 169, 1)", borderColor);
 		}
 		elements = driver.findElements(By.className("event-high"));
-		for(WebElement element:elements) {
+		for (WebElement element : elements) {
 			String color = element.getCssValue("color");
 			String backColor = element.getCssValue("background-color");
 			String borderColor = element.getCssValue("border-top-color");
@@ -269,7 +269,52 @@ public class TestCalendar {
 		}
 	}
 
-	//@Test
+	@Test
+	public void testDetailsWidth() throws InterruptedException {
+		Thread.sleep(10000);
+		driver.findElements(By.cssSelector("a.fc-day-grid-event")).get(0).click();
+		Thread.sleep(1000);
+		double maxWidth = driver.findElement(By.xpath("//div[@ng-show='SelectedEvent']")).getSize().getWidth();
+		double paddingLeft = Double.parseDouble(driver.findElement(By.xpath("//div[@ng-show='SelectedEvent']"))
+				.getCssValue("padding-left").replace("px", ""));
+		double paddingRight = Double.parseDouble(driver.findElement(By.xpath("//div[@ng-show='SelectedEvent']"))
+				.getCssValue("padding-right").replace("px", ""));
+		WebElement editButton = driver.findElement(By.cssSelector("button.btn.btn-edit__style.btn-large"));
+		double editButtonWidth = editButton.getSize().getWidth();
+		double editButtonLeftMargin = Double.parseDouble(editButton.getCssValue("margin-left").replace("px", ""));
+		double editButtonRightMargin = Double.parseDouble(editButton.getCssValue("margin-right").replace("px", ""));
+		double editButtonLeftBorder = Double.parseDouble(editButton.getCssValue("border-left-width").replace("px", ""));
+		double editButtonRightBorder = Double
+				.parseDouble(editButton.getCssValue("border-right-width").replace("px", ""));
+		double editButtonSize = editButtonWidth + editButtonLeftMargin + editButtonRightMargin + editButtonLeftBorder
+				+ editButtonRightBorder;
+		WebElement removeButton = driver.findElement(By.cssSelector("button.btn.btn-remove__style.btn-large"));
+		double removeButtonWidth = removeButton.getSize().getWidth();
+		double removeButtonLeftMargin = Double.parseDouble(removeButton.getCssValue("margin-left").replace("px", ""));
+		double removeButtonRightMargin = Double.parseDouble(removeButton.getCssValue("margin-right").replace("px", ""));
+		double removeButtonLeftBorder = Double
+				.parseDouble(removeButton.getCssValue("border-left-width").replace("px", ""));
+		double removeButtonRightBorder = Double
+				.parseDouble(removeButton.getCssValue("border-right-width").replace("px", ""));
+		double removeButtonSize = removeButtonWidth + removeButtonLeftMargin + removeButtonRightMargin
+				+ removeButtonLeftBorder + removeButtonRightBorder;
+		WebElement meetingDetailsButton = driver.findElement(By.xpath("//button[@class='btn btn-large']"));
+		double meetingDetailsButtonWidth = meetingDetailsButton.getSize().getWidth();
+		double meetingDetailsButtonLeftMargin = Double
+				.parseDouble(meetingDetailsButton.getCssValue("margin-left").replace("px", ""));
+		double meetingDetailsButtonRightMargin = Double
+				.parseDouble(meetingDetailsButton.getCssValue("margin-right").replace("px", ""));
+		double meetingDetailsButtonLeftBorder = Double
+				.parseDouble(meetingDetailsButton.getCssValue("border-left-width").replace("px", ""));
+		double meetingDetailsButtonRightBorder = Double
+				.parseDouble(meetingDetailsButton.getCssValue("border-right-width").replace("px", ""));
+		double meetingDetailsButtonSize = meetingDetailsButtonWidth + meetingDetailsButtonLeftMargin
+				+ meetingDetailsButtonRightMargin + meetingDetailsButtonLeftBorder + meetingDetailsButtonRightBorder;
+		assertTrue(maxWidth > editButtonSize + removeButtonSize + paddingLeft + paddingRight);
+		assertTrue(maxWidth > meetingDetailsButtonSize + paddingLeft + paddingRight);
+	}
+
+	@Test
 	public void testHeadingText() {
 		WebElement heading = driver.findElement(By.className("heading__style"));
 		String headingText = heading.getText();
